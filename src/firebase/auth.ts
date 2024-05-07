@@ -1,18 +1,6 @@
 import { auth } from './firebase-config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from 'firebase/auth';
 
-export const isAuthenticated = () => {
-    return new Promise<boolean>((resolve) => {
-      onAuthStateChanged(auth, (user) => {
-        if (user && user.emailVerified) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      });
-    });
-  };
-
 export const signUpEmail = async (email: string, password: string) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);

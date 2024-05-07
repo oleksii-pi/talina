@@ -1,12 +1,23 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { signInGoogle, signInEmail } from '../firebase/auth';
 
 const LoginPage = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const fromUrl = location.state?.from?.pathname || '/';
+
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
         const email = (event.target as HTMLFormElement).email.value;
         const password = (event.target as HTMLFormElement).password.value;
-        signInEmail(email, password);
+        const userCredential = await signInEmail(email, password);
+        if (userCredential.user.emailVerified) {
+            console.log('User logged in successfully', userCredential.user, 'naviagete to ', fromUrl);
+            navigate(fromUrl, { replace: true });  
+          } else {
+            alert('Please verify your email before logging in.');
+          }
     };
 
     return (
