@@ -1,5 +1,11 @@
 import { auth } from './firebase-config';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from 'firebase/auth';
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  sendEmailVerification, 
+  GoogleAuthProvider, 
+  signInWithPopup,
+} from 'firebase/auth';
 
 export const signUpEmail = async (email: string, password: string) => {
   try {
@@ -24,5 +30,11 @@ export const signInEmail = async (email: string, password: string) => {
 };
 
 export const signInGoogle = async () => {
-    // TODO: Implement Google sign-in
+  const provider = new GoogleAuthProvider();
+  try {
+    const userCredential = await signInWithPopup(auth, provider);
+    return userCredential;
+  } catch (error) {
+    throw error;
+  }
 }
